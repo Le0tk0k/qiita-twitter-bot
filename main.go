@@ -1,8 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/dghubble/go-twitter/twitter"
@@ -16,6 +19,12 @@ type Credentials struct {
 	AccessTokenSecret string
 }
 
+type Article struct {
+	Title     string `json:"title"`
+	URL       string `json:"url"`
+	CreatedAt string `json:"created_at"`
+}
+
 func getClient(creds *Credentials) *twitter.Client {
 	config := oauth1.NewConfig(creds.ConsumerKey, creds.ConsumerSecret)
 	token := oauth1.NewToken(creds.AccessToken, creds.AccessTokenSecret)
@@ -23,6 +32,19 @@ func getClient(creds *Credentials) *twitter.Client {
 	client := twitter.NewClient(httpClient)
 
 	return client
+}
+
+func getQiitaArticles() {
+	req, _ := http.NewRequest("GET", "https://qiita.com/api/v2/items?page=1&per_page=1&query=tag:go", nil)
+
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+
+	body, _ := ioutil.ReadAll(res.Body)
+
+	var article []Article
+	json.Unmarshal(body, &article)
+	fmt.Printf("%+v\n", article)
 }
 
 func main() {
@@ -42,4 +64,6 @@ func main() {
 		log.Println(err)
 	}
 	log.Printf("%+v\n", resp)
+
+	getQiitaArticles()
 }
