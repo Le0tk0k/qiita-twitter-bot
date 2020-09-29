@@ -5,7 +5,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 )
+
+type Client struct {
+	Endpoint  string
+	CreatedAt string
+	Tag       string
+}
 
 type Article struct {
 	Title     string `json:"title"`
@@ -13,8 +20,16 @@ type Article struct {
 	CreatedAt string `json:"created_at"`
 }
 
-func GetQiitaArticles() {
-	req, _ := http.NewRequest("GET", "https://qiita.com/api/v2/items?page=1&per_page=1&query=tag:go", nil)
+func (c *Client) GetQiitaArticles() {
+	u, _ := url.Parse(c.Endpoint)
+	q := u.Query()
+	q.Set("page", "1")
+	q.Set("per_page", "1")
+	q.Set("query", "tag:"+c.Tag+" created:>"+c.CreatedAt)
+	u.RawQuery = q.Encode()
+	fmt.Println(u.String())
+
+	req, _ := http.NewRequest("GET", u.String(), nil)
 
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()

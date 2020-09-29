@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"os"
-
 	"github.com/Le0tk0k/qiita-twitter-bot/auth"
 	"github.com/Le0tk0k/qiita-twitter-bot/qiita"
 	"github.com/joho/godotenv"
+	"log"
+	"os"
 )
 
 func main() {
@@ -25,10 +24,16 @@ func main() {
 
 	api := auth.GetTwitterAPI(&creds)
 
-	_, err = api.PostTweet("text", nil)
+	_, err = api.PostTweet("tt", nil)
 	if err != nil {
 		log.Println(err)
 	}
 
-	qiita.GetQiitaArticles()
+	c := qiita.Client{
+		Endpoint:  "https://qiita.com/api/v2/items",
+		CreatedAt: "2020-09-27",
+		Tag:       "go",
+	}
+
+	c.GetQiitaArticles()
 }
