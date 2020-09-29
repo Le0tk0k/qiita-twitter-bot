@@ -7,31 +7,12 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/dghubble/go-twitter/twitter"
-	"github.com/dghubble/oauth1"
 )
-
-type Credentials struct {
-	ConsumerKey       string
-	ConsumerSecret    string
-	AccessToken       string
-	AccessTokenSecret string
-}
 
 type Article struct {
 	Title     string `json:"title"`
 	URL       string `json:"url"`
 	CreatedAt string `json:"created_at"`
-}
-
-func getClient(creds *Credentials) *twitter.Client {
-	config := oauth1.NewConfig(creds.ConsumerKey, creds.ConsumerSecret)
-	token := oauth1.NewToken(creds.AccessToken, creds.AccessTokenSecret)
-	httpClient := config.Client(oauth1.NoContext, token)
-	client := twitter.NewClient(httpClient)
-
-	return client
 }
 
 func getQiitaArticles() {
