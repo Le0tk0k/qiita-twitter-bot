@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/Le0tk0k/qiita-twitter-bot/oauth"
 )
 
 type Article struct {
@@ -29,16 +31,14 @@ func getQiitaArticles() {
 }
 
 func main() {
-	creds := Credentials{
+	creds := oauth.Credentials{
 		ConsumerKey:       os.Getenv("CONSUMER_KEY"),
 		ConsumerSecret:    os.Getenv("CONSUMER_SECRET"),
 		AccessToken:       os.Getenv("ACCESS_TOKEN"),
 		AccessTokenSecret: os.Getenv("ACCESS_TOKEN_SECRET"),
 	}
 
-	fmt.Printf("%+v\n", creds)
-
-	client := getClient(&creds)
+	client := oauth.GetClient(&creds)
 
 	_, resp, err := client.Statuses.Update("test test test", nil)
 	if err != nil {
