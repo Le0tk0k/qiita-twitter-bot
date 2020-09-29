@@ -36,7 +36,7 @@ func (c *Client) GetQiitaArticles() {
 
 	body, _ := ioutil.ReadAll(res.Body)
 
-	var article []Article
-	json.Unmarshal(body, &article)
-	fmt.Printf("%+v\n", article)
+	var articles []Article
+	json.Unmarshal(body, &articles)
+	fmt.Printf("%+v\n", articles)
 }
