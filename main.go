@@ -46,7 +46,7 @@ func post() {
 	for _, i := range *articles {
 		if i.CreatedAt.After(t) {
 			fmt.Println(i.CreatedAt)
-			_, err = api.PostTweet(i.Title, nil)
+			_, err = api.PostTweet(i.Title+"\n#golang\n"+i.URL, nil)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 			}
