@@ -9,10 +9,18 @@ import (
 	"os"
 )
 
-func main() {
+func readEnv() error {
 	err := godotenv.Load()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
+		return err
+	}
+	return nil
+}
+
+func main() {
+	if err := readEnv(); err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
 	}
 
 	creds := auth.Credentials{
@@ -24,7 +32,7 @@ func main() {
 
 	api := auth.GetTwitterAPI(&creds)
 
-	_, err = api.PostTweet("testtt", nil)
+	_, err := api.PostTweet("testtt", nil)
 	if err != nil {
 		log.Println(err)
 	}
