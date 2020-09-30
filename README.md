@@ -1,6 +1,9 @@
 # Qiita Twitter Bot
 [@BotQiita](https://twitter.com/BotQiita)  
 
+## Explanation Entry
+[Go×Qiita API×LambdaでTwitter Bot作った](https://qiita.com/Le0tk0k/items/7ce7f13514de93bac050)
+
 ## Architecture
 
 ![Architecture](./docs/architecture.png)
