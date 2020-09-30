@@ -8,6 +8,8 @@ import (
 	"os"
 )
 
+var tag = "go"
+
 // .envの読み込み
 func readEnv() error {
 	err := godotenv.Load()
@@ -16,8 +18,6 @@ func readEnv() error {
 	}
 	return nil
 }
-
-var tag = "go"
 
 func main() {
 	if err := readEnv(); err != nil {
