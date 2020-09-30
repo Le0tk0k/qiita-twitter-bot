@@ -12,6 +12,7 @@ type Credentials struct {
 	AccessTokenSecret string
 }
 
+// GetTwitterAPI gets twitter client
 func GetTwitterAPI() *anaconda.TwitterApi {
 	creds := Credentials{
 		ConsumerKey:       os.Getenv("CONSUMER_KEY"),
