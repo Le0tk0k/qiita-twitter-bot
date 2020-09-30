@@ -33,6 +33,7 @@ func post() {
 			_, err = api.PostTweet(i.Title+"\n#golang\n"+i.URL, nil)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
 			}
 		}
 	}
