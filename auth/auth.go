@@ -1,8 +1,9 @@
 package auth
 
 import (
-	"github.com/ChimeraCoder/anaconda"
 	"os"
+
+	"github.com/ChimeraCoder/anaconda"
 )
 
 type Credentials struct {
