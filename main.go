@@ -24,14 +24,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	creds := auth.Credentials{
-		ConsumerKey:       os.Getenv("CONSUMER_KEY"),
-		ConsumerSecret:    os.Getenv("CONSUMER_SECRET"),
-		AccessToken:       os.Getenv("ACCESS_TOKEN"),
-		AccessTokenSecret: os.Getenv("ACCESS_TOKEN_SECRET"),
-	}
-
-	api := auth.GetTwitterAPI(&creds)
+	api := auth.GetTwitterAPI()
 
 	_, err := api.PostTweet("testtt", nil)
 	if err != nil {
