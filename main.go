@@ -18,28 +18,34 @@ func readEnv() error {
 	return nil
 }
 
+var tag = "go"
+
 func main() {
 	if err := readEnv(); err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}
 
+	c := qiita.Client{
+		Endpoint:  "https://qiita.com/api/v2/items",
+		CreatedAt: "2020-09-20",
+		Tag:       tag,
+	}
+
 	api := auth.GetTwitterAPI()
 
-	_, err := api.PostTweet("testtt", nil)
+	_, err := api.PostTweet("tesaattt", nil)
 	if err != nil {
 		log.Println(err)
 	}
 
-	c := qiita.Client{
-		Endpoint:  "https://qiita.com/api/v2/items",
-		CreatedAt: "2020-09-27",
-		Tag:       "go",
-	}
-
-	err = c.GetQiitaArticles()
+	articles, err := c.GetQiitaArticles()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
+	}
+
+	for _, i := range *articles {
+		fmt.Printf("%+v\n", i)
 	}
 }
