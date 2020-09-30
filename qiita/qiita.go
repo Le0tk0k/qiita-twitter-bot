@@ -37,7 +37,7 @@ func (c *Client) GetQiitaArticles() (*[]Article, error) {
 	}
 
 	u := createUrl(e, c)
-	req, err := http.NewRequest("GET", u, nil)
+	req, err := http.NewRequest(http.MethodGet, u, nil)
 	if err != nil {
 		return nil, err
 	}
