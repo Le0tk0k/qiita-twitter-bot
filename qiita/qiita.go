@@ -21,20 +21,24 @@ type Article struct {
 	CreatedAt string `json:"created_at"`
 }
 
-func (c *Client) GetQiitaArticles() error {
-	u, err := url.Parse(c.Endpoint)
-	if err != nil {
-		return err
-	}
-
+// urlを作成する
+func createUrl(u *url.URL, c *Client) string {
 	q := u.Query()
 	q.Set("page", "1")
 	q.Set("per_page", "1")
 	q.Set("query", "tag:"+c.Tag+" created:>"+c.CreatedAt)
 	u.RawQuery = q.Encode()
-	fmt.Println(u.String())
+	return u.String()
+}
 
-	req, err := http.NewRequest("GET", u.String(), nil)
+func (c *Client) GetQiitaArticles() error {
+	e, err := url.Parse(c.Endpoint)
+	if err != nil {
+		return err
+	}
+
+	u := createUrl(e, c)
+	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
 		return err
 	}
