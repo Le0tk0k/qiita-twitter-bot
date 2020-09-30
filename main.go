@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/Le0tk0k/qiita-twitter-bot/auth"
-	"github.com/Le0tk0k/qiita-twitter-bot/qiita"
-	"github.com/joho/godotenv"
 	"os"
 	"time"
+
+	"github.com/Le0tk0k/qiita-twitter-bot/auth"
+	"github.com/Le0tk0k/qiita-twitter-bot/qiita"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/joho/godotenv"
 )
 
 var tag = "go"
@@ -20,7 +22,7 @@ func readEnv() error {
 	return nil
 }
 
-func main() {
+func post() {
 	if err := readEnv(); err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
@@ -39,7 +41,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	t := time.Now().Add(time.Duration((-10) * time.Hour))
+	t := time.Now().Add(time.Duration((-1) * time.Hour))
 
 	for _, i := range *articles {
 		if i.CreatedAt.After(t) {
@@ -50,4 +52,8 @@ func main() {
 			}
 		}
 	}
+}
+
+func main() {
+	lambda.Start(post)
 }
