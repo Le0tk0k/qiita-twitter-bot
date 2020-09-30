@@ -2,6 +2,7 @@ package qiita
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -20,8 +21,12 @@ type Article struct {
 	CreatedAt string `json:"created_at"`
 }
 
-func (c *Client) GetQiitaArticles() {
-	u, _ := url.Parse(c.Endpoint)
+func (c *Client) GetQiitaArticles() error {
+	u, err := url.Parse(c.Endpoint)
+	if err != nil {
+		return err
+	}
+
 	q := u.Query()
 	q.Set("page", "1")
 	q.Set("per_page", "1")
@@ -29,14 +34,31 @@ func (c *Client) GetQiitaArticles() {
 	u.RawQuery = q.Encode()
 	fmt.Println(u.String())
 
-	req, _ := http.NewRequest("GET", u.String(), nil)
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return err
+	}
 
-	res, _ := http.DefaultClient.Do(req)
-	defer res.Body.Close()
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
 
-	body, _ := ioutil.ReadAll(res.Body)
+	if resp.StatusCode != http.StatusOK {
+		return errors.New(resp.Status)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
 
 	var articles []Article
-	json.Unmarshal(body, &articles)
+	if err := json.Unmarshal(body, &articles); err != nil {
+		return err
+	}
 	fmt.Printf("%+v\n", articles)
+
+	return nil
 }

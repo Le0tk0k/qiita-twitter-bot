@@ -24,7 +24,7 @@ func main() {
 
 	api := auth.GetTwitterAPI(&creds)
 
-	_, err = api.PostTweet("tt", nil)
+	_, err = api.PostTweet("testtt", nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -35,5 +35,9 @@ func main() {
 		Tag:       "go",
 	}
 
-	c.GetQiitaArticles()
+	err = c.GetQiitaArticles()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
+	}
 }
