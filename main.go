@@ -9,6 +9,7 @@ import (
 	"os"
 )
 
+// .envの読み込み
 func readEnv() error {
 	err := godotenv.Load()
 	if err != nil {
