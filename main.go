@@ -5,7 +5,6 @@ import (
 	"github.com/Le0tk0k/qiita-twitter-bot/auth"
 	"github.com/Le0tk0k/qiita-twitter-bot/qiita"
 	"github.com/joho/godotenv"
-	"log"
 	"os"
 )
 
@@ -33,12 +32,6 @@ func main() {
 	}
 
 	api := auth.GetTwitterAPI()
-
-	_, err := api.PostTweet("tesaattt", nil)
-	if err != nil {
-		log.Println(err)
-	}
-
 	articles, err := c.GetQiitaArticles()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
@@ -46,6 +39,9 @@ func main() {
 	}
 
 	for _, i := range *articles {
-		fmt.Printf("%+v\n", i)
+		_, err = api.PostTweet(i.Title, nil)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
 	}
 }
