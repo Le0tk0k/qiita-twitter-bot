@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type Client struct {
@@ -15,9 +16,9 @@ type Client struct {
 }
 
 type Article struct {
-	Title     string `json:"title"`
-	URL       string `json:"url"`
-	CreatedAt string `json:"created_at"`
+	Title     string    `json:"title"`
+	URL       string    `json:"url"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 // urlを作成する
@@ -25,7 +26,7 @@ func createUrl(u *url.URL, c *Client) string {
 	q := u.Query()
 	q.Set("page", "1")
 	q.Set("per_page", "10")
-	q.Set("query", "tag:"+c.Tag+" created:>"+c.CreatedAt)
+	q.Set("query", "tag:"+c.Tag+" created:>="+c.CreatedAt)
 	u.RawQuery = q.Encode()
 	return u.String()
 }

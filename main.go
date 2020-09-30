@@ -6,6 +6,7 @@ import (
 	"github.com/Le0tk0k/qiita-twitter-bot/qiita"
 	"github.com/joho/godotenv"
 	"os"
+	"time"
 )
 
 var tag = "go"
@@ -27,7 +28,7 @@ func main() {
 
 	c := qiita.Client{
 		Endpoint:  "https://qiita.com/api/v2/items",
-		CreatedAt: "2020-09-20",
+		CreatedAt: time.Now().Format("2006-01-02"),
 		Tag:       tag,
 	}
 
@@ -38,10 +39,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	t := time.Now().Add(time.Duration((-10) * time.Hour))
+
 	for _, i := range *articles {
-		_, err = api.PostTweet(i.Title, nil)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
+		if i.CreatedAt.After(t) {
+			fmt.Println(i.CreatedAt)
+			_, err = api.PostTweet(i.Title, nil)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+			}
 		}
 	}
 }
